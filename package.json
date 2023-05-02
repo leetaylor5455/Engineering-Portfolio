@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "three": "^0.151.3"
-  },
-  "devDependencies": {
-    "vite": "^4.3.3"
+    "@react-three/drei": "9.32",
+    "@react-three/fiber": "8.9",
+    "@vitejs/plugin-react": "^4.0.0",
+    "three": "^0.148.0"
   }
 }
