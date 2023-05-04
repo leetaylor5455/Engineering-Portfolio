@@ -14,8 +14,8 @@ export default function Ball(props) {
         receiveShadow
         geometry={nodes.Sphere.geometry}
         material={materials.TTBall}
-        position={[-0.46, 2.43, -0.02]}
-        scale={0.06}
+        position={[-0.46174, 2.43609, -0.25688]}
+        scale={0.06441}
       />
     </group>
   );

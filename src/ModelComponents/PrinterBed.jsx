@@ -14,9 +14,9 @@ export default function PrinterBed(props) {
         receiveShadow
         geometry={nodes.Printer_Bed.geometry}
         material={materials.Bed}
-        position={[-0.46, 2.36, -0.02]}
+        position={[-0.46231, 2.35874, -0.25441]}
         rotation={[Math.PI, 0, Math.PI]}
-        scale={0.38}
+        scale={0.38454}
       />
     </group>
   );

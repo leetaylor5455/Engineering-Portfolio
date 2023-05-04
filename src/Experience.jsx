@@ -1,5 +1,6 @@
-import { useRef, useEffect } from 'react'
-import { Environment, OrbitControls, useHelper, useGLTF, softShadows } from '@react-three/drei'
+import { useRef, useEffect, useState } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { Environment, OrbitControls, useHelper, useGLTF, softShadows, FirstPersonControls, PointerLockControls } from '@react-three/drei'
 import * as THREE from 'three'
 
 // (Animated) Model imports
@@ -7,14 +8,18 @@ import PrinterXAxis from './ModelComponents/PrinterXAxis'
 import PrinterNozzle from './ModelComponents/PrinterNozzle'
 import PrinterBed from './ModelComponents/PrinterBed'
 import Ball from './ModelComponents/Ball'
+import CutBall from './ModelComponents/CutBall'
 import HeroText from './ModelComponents/HeroText'
 
 // softShadows()
 
 export default function Experience() {
 
-    const directionalLight = useRef()
-    useHelper(directionalLight, THREE.DirectionalLightHelper, 1)
+    // Refs
+    const directionalLightRef = useRef()
+
+    // Helpers
+    // useHelper(directionalLightRef, THREE.DirectionalLightHelper, 1)
 
     const setupShadows = (nodes) => {
         const obj2arr = Object.entries(nodes)
@@ -25,28 +30,43 @@ export default function Experience() {
         }
     }
 
+    // Load in static models
     const room = useGLTF('./models/room.glb')
     const printerStaticParts = useGLTF('./models/printerstaticparts.glb')
     const bench = useGLTF('./models/bench.glb')
     const drawingAndParts = useGLTF('./models/drawingandparts.glb')
+    const heroText = useGLTF('./models/herotext.glb')
 
+
+    // Shadows
     useEffect(() => {
         setupShadows(room.nodes)
         setupShadows(bench.nodes)
         setupShadows(printerStaticParts.nodes)
         setupShadows(drawingAndParts.nodes)
+        setupShadows(heroText.nodes)
     }, [])
+
+    // Animation
+    const [bedPosition, setBedPosition] = useState(0)
+
+    useFrame((state) => {
+        setBedPosition(-0.059*Math.cos(state.clock.getElapsedTime()))
+    })
+
 
     return <>
         <Environment
             // background
             files='./hdris/studio_small_09_4k.hdr'
         />
-        <OrbitControls/>
+        {/* <OrbitControls/> */}
+        {/* <PointerLockControls /> */}
 
         <directionalLight
-            ref={ directionalLight } 
-            position={ [ 4, 10, 5 ] } 
+            intensity={0.8}
+            ref={ directionalLightRef } 
+            position={ [ 4, 10, 2 ] } 
             shadow-normalBias={ 0.05 }
             shadow-mapSize={ [ 1024*6, 1024*6 ]}
             shadow-camera-far={ 50 }
@@ -57,15 +77,16 @@ export default function Experience() {
         />
         {/* <ambientLight intensity={ 0.2 }/> */}
         <PrinterXAxis />
-        <PrinterNozzle />
-        <PrinterBed />
-        <Ball />
-        <HeroText />
+
+        <group position={ [0, 0, bedPosition]}>
+            <PrinterBed />
+            <CutBall />
+        </group>
+        {/* <HeroText /> */}
+        <primitive object={heroText.scene} />
         <primitive object={room.scene} />
         <primitive object={printerStaticParts.scene} />
         <primitive object={bench.scene} />
         <primitive object={drawingAndParts.scene} />
     </>
 }
-
-// useGLTF.preload('./models/workshop.glb')
