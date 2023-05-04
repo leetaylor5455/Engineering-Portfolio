@@ -35,7 +35,7 @@ export default function Experience() {
     const printerStaticParts = useGLTF('./models/printerstaticparts.glb')
     const bench = useGLTF('./models/bench.glb')
     const drawingAndParts = useGLTF('./models/drawingandparts.glb')
-    const heroText = useGLTF('./models/herotext.glb')
+    // const heroText = useGLTF('./models/herotext.glb')
 
 
     // Shadows
@@ -44,7 +44,7 @@ export default function Experience() {
         setupShadows(bench.nodes)
         setupShadows(printerStaticParts.nodes)
         setupShadows(drawingAndParts.nodes)
-        setupShadows(heroText.nodes)
+        // setupShadows(heroText.nodes)
     }, [])
 
     // Animation
@@ -82,8 +82,8 @@ export default function Experience() {
             <PrinterBed />
             <CutBall />
         </group>
-        {/* <HeroText /> */}
-        <primitive object={heroText.scene} />
+        <HeroText />
+        {/* <primitive object={heroText.scene} /> */}
         <primitive object={room.scene} />
         <primitive object={printerStaticParts.scene} />
         <primitive object={bench.scene} />
